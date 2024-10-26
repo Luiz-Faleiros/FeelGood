@@ -37,7 +37,11 @@ backend/
 │   └── middlewares/
 ├── app.ts
 └── .env
+```
 
+### Frontend
+
+```bash
 frontend/
 ├── src/
 │   ├── components/
