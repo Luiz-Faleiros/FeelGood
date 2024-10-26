@@ -27,6 +27,27 @@ class UserService {
     if (!isMatch) return null;
     return user;
   }
+
+  /**
+   * Atualiza a senha de um usuário.
+   * @param userId - ID do usuário.
+   * @param newPassword - Nova senha em texto puro.
+   * @returns O usuário atualizado ou null se não encontrado.
+   */
+  public async updatePassword(userId: string, newPassword: string): Promise<IUserModel | null> {
+    // Criptografar a nova senha
+    const salt = await bcrypt.genSalt(10);
+    const newHash = await bcrypt.hash(newPassword, salt);
+
+    // Atualizar o campo hash no usuário
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { hash: newHash },
+      { new: true } // Retorna o documento atualizado
+    );
+
+    return updatedUser;
+  }
 }
 
 export default new UserService();

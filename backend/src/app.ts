@@ -4,10 +4,21 @@ import connectDB from './config/db';
 import userRoutes from './routes/userRoutes';
 import questionnaireRoutes from './routes/questionnaireRoutes';
 import { errorHandler } from './middlewares/errorMiddleware';
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
+
+const corsOptions = {
+    origin: 'http://localhost:3000', // 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Se precisar enviar cookies ou autenticação
+  };
+
+
+app.use(cors(corsOptions));
 
 
 connectDB();

@@ -39,6 +39,40 @@ class UserController {
       next(error);
     }
   }
+
+  /**
+   * Redefinir a senha do usuário.
+   * Espera receber o userId e a nova senha no corpo da requisição.
+   */
+  public async resetPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { userId, newPassword } = req.body;
+
+      // Validação básica
+      if (!userId || !newPassword) {
+        res.status(400).json({ message: 'userId e newPassword são obrigatórios.' });
+        return;
+      }
+
+      // Validar a força da nova senha (opcional, mas recomendado)
+      if (newPassword.length < 6) {
+        res.status(400).json({ message: 'A nova senha deve ter pelo menos 6 caracteres.' });
+        return;
+      }
+
+      // Chamar o serviço para atualizar a senha
+      const updatedUser = await userService.updatePassword(userId, newPassword);
+
+      if (!updatedUser) {
+        res.status(404).json({ message: 'Usuário não encontrado.' });
+        return;
+      }
+
+      res.status(200).json({ message: 'Senha atualizada com sucesso!' });
+    } catch (error: any) {
+      next(error);
+    }
+  }
 }
 
 export default new UserController();

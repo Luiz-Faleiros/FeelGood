@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import userController from '../controllers/userController';
-import { validateRegister } from '../middlewares/validate';
+import { validateRegister, validateResetPassword } from '../middlewares/validate';
 
 const router = Router();
 
 router.post('/register', validateRegister, userController.register);
 router.post('/login', userController.login);
-router.put('/esqueceu-senha', )
+router.post('/reset-password', validateResetPassword, userController.resetPassword);
 
 export default router;

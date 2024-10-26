@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { body, validationResult } from 'express-validator';
 
+// Validação para registro (existente)
 export const validateRegister = [
   body('name').notEmpty().withMessage('Nome é obrigatório'),
   body('email').isEmail().withMessage('Email inválido'),
@@ -9,6 +10,31 @@ export const validateRegister = [
   body('gender').isIn(['Male', 'Female', 'Other']).withMessage('Gênero inválido'),
   body('cep').matches(/^\d{5}-?\d{3}$/).withMessage('CEP inválido'),
   body('bairro').notEmpty().withMessage('Bairro é obrigatório'),
+  (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() });
+      return;
+    }
+    next();
+  },
+];
+
+// Nova validação para redefinição de senha
+export const validateResetPassword = [
+  body('userId')
+    .notEmpty()
+    .withMessage('userId é obrigatório')
+    .isMongoId()
+    .withMessage('userId inválido'),
+
+  body('newPassword')
+    .notEmpty()
+    .withMessage('newPassword é obrigatório')
+    .isLength({ min: 6 })
+    .withMessage('newPassword deve ter pelo menos 6 caracteres'),
+
+  // Middleware para tratar os erros de validação
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
