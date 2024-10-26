@@ -55,6 +55,14 @@ frontend/
 
 ## Instruções para Execução
 
+## Clonando o Repositório
+
+Para começar, clone o repositório do projeto:
+
+```bash
+git clone https://github.com/Luiz-Faleiros/FeelGood.git
+```
+
 ### Backend
 
 1. Navegue até a pasta do frontend:
