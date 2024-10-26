@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { body, validationResult } from 'express-validator';
 
-// Validação para registro (existente)
+
 export const validateRegister = [
   body('name').notEmpty().withMessage('Nome é obrigatório'),
   body('email').isEmail().withMessage('Email inválido'),
@@ -20,7 +20,7 @@ export const validateRegister = [
   },
 ];
 
-// Nova validação para redefinição de senha
+
 export const validateResetPassword = [
   body('userId')
     .notEmpty()
@@ -34,7 +34,7 @@ export const validateResetPassword = [
     .isLength({ min: 6 })
     .withMessage('newPassword deve ter pelo menos 6 caracteres'),
 
-  // Middleware para tratar os erros de validação
+  
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

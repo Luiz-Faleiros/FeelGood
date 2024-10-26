@@ -1,6 +1,6 @@
 import Questionnaire, { IQuestionnaireModel } from '../models/Questionnaire';
 import { IQuestionnaire } from '../interfaces/IQuestionnaire';
-import calculateScore from '../utils/calculateScore';
+import { calculateScore } from '../utils/scoreUtils';
 
 class QuestionnaireService {
   public async submitQuestionnaire(data: IQuestionnaire): Promise<IQuestionnaireModel> {

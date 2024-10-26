@@ -6,7 +6,6 @@ class UserController {
     try {
       const { name, email, password, age, gender, cep, bairro } = req.body;
 
-      // Validação básica
       if (!name || !email || !password || age === undefined || !gender || !cep || !bairro) {
         res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
         return;
@@ -15,7 +14,7 @@ class UserController {
       const user = await userService.createUser({ name, email, password, age, gender, cep, bairro });
       res.status(201).json({ message: 'Usuário criado com sucesso!', userId: user._id });
     } catch (error: any) {
-      // Verificar se é um erro de duplicação de email
+
       if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
         res.status(400).json({ message: 'Email já está em uso.' });
         return;
@@ -33,34 +32,57 @@ class UserController {
         return;
       }
 
-      // Resposta sem token JWT
-      res.status(200).json({ message: 'Autenticado com sucesso!', status: true });
+      res.status(200).json({ 
+        message: 'Autenticado com sucesso!', 
+        status: true, 
+        userId: user._id 
+      });
     } catch (error: any) {
       next(error);
     }
   }
 
-  /**
-   * Redefinir a senha do usuário.
-   * Espera receber o userId e a nova senha no corpo da requisição.
-   */
+  public async getUserData(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const userId = req.params.userId; 
+
+      const user = await userService.getUserDetails(userId);
+      if (!user) {
+        res.status(404).json({ message: 'Usuário não encontrado.' });
+        return;
+      }
+
+      const scores = await userService.getUserScores(userId);
+      const latestScore = scores.length > 0 ? scores[0].score : null; 
+
+      res.status(200).json({
+        name: user.name,
+        email: user.email,
+        age: user.age,
+        gender: user.gender,
+        cep: user.cep,
+        bairro: user.bairro,
+        latestScore: latestScore 
+      });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+
   public async resetPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { userId, newPassword } = req.body;
 
-      // Validação básica
       if (!userId || !newPassword) {
         res.status(400).json({ message: 'userId e newPassword são obrigatórios.' });
         return;
       }
 
-      // Validar a força da nova senha (opcional, mas recomendado)
       if (newPassword.length < 6) {
         res.status(400).json({ message: 'A nova senha deve ter pelo menos 6 caracteres.' });
         return;
       }
 
-      // Chamar o serviço para atualizar a senha
       const updatedUser = await userService.updatePassword(userId, newPassword);
 
       if (!updatedUser) {
