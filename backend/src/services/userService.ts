@@ -1,27 +1,32 @@
 import User, { IUserModel } from '../models/User';
-import { IUser } from '../interfaces/IUser';
 import bcrypt from 'bcrypt';
 
-class UserService {
-    public async createUser(userData: IUser): Promise<IUserModel> {
-        const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash(userData.password, salt);
-        const user = new User({ 
-            name: userData.name, 
-            email: userData.email, 
-            password: userData.password,
-            hash 
-        });
-        return await user.save();
-    }
+interface ICreateUser {
+  name: string;
+  email: string;
+  password: string;
+  age: number;
+  gender: 'Male' | 'Female' | 'Other';
+  cep: string;
+  bairro: string;
+}
 
-    public async authenticate(email: string, password: string): Promise<IUserModel | null> {
-        const user = await User.findOne({ email });
-        if (!user) return null;
-        const isMatch = await bcrypt.compare(password, user.hash);
-        if (!isMatch) return null;
-        return user;
-    }
+class UserService {
+  public async createUser(data: ICreateUser): Promise<IUserModel> {
+    const { name, email, password, age, gender, cep, bairro } = data;
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+    const user = new User({ name, email, hash, age, gender, cep, bairro });
+    return await user.save();
+  }
+
+  public async authenticate(email: string, password: string): Promise<IUserModel | null> {
+    const user = await User.findOne({ email });
+    if (!user) return null;
+    const isMatch = await bcrypt.compare(password, user.hash);
+    if (!isMatch) return null;
+    return user;
+  }
 }
 
 export default new UserService();
