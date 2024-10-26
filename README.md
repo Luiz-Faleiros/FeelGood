@@ -107,3 +107,7 @@ npm run dev
 ### Objetivo do Aplicativo
 
 O FeelGood foi desenvolvido com a intenção de ser uma ferramenta eficaz para o acompanhamento psicológico, oferecendo suporte tanto para os usuários quanto para os profissionais da saúde mental. A IA incorporada ajuda a fornecer recomendações e suporte adicional, contribuindo para a saúde mental de todos os usuários.
+
+## Documentação
+
+Você pode encontrar a documentação completa [aqui](docs).
