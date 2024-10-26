@@ -8,7 +8,7 @@ const Home: React.FC = () => {
     <div>
       <Navbar />
       <div
-        className="flex flex-col items-center justify-center bg-gray-100"
+        className="flex flex-col items-center justify-center bg-gray-100 p-4"
         style={{ minHeight: 'calc(100vh - 72px)' }}
       >
         <h2 className="text-black text-3xl font-bold mb-4">
