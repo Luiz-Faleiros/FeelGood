@@ -1,50 +1,62 @@
+// app/login/page.tsx
 "use client";
 
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import LoginModal from "../components/LoginModal";
-import { loginUser } from "../services/api";
+import { loginUser } from "../services/api"; // Importando a função de login
+import { useAuth } from "../context/AuthContext"; // Importando o contexto
+import { Raleway } from "next/font/google";
+import Link from "next/link";
+import Cookies from "js-cookie";
+
+const raleway = Raleway({
+  subsets: ["latin"],
+});
 
 const Login: React.FC = () => {
   const router = useRouter();
+  const { login } = useAuth(); // Obtendo a função de login do contexto
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const handleLogin = async () => {
     try {
-      const data = await loginUser(username, password);
-      if (data.success) {
-        router.push("/home"); // Redireciona para a página Home
+      const data = await loginUser(email, password);
+      if (data.status) {
+        login(); // Chamando a função de login do contexto
+        Cookies.set('authToken', data.token, { expires: 7 }); // Salva o token real no cookie
+        router.push("/homeLogged"); // Redireciona para a página inicial
       } else {
         setErrorMessage(data.message || "Erro ao fazer login.");
       }
     } catch (error) {
-      setErrorMessage("Erro ao conectar com o servidor.");
+      setErrorMessage("Erro ao fazer login.");
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <h1 className="text-2xl mb-4 text-black">Acesse sua conta</h1>
-      <form
-        className="bg-white p-6 rounded-2xl shadow-md max-w-[30%]"
-        onSubmit={(e) => e.preventDefault()}
-      >
+      <Link href="/" className={`${raleway.className} text-black font-bold text-4xl mb-4`}>
+        FeelGood
+      </Link>
+      <form className="bg-white p-6 rounded-2xl shadow-md md:max-w-[30%]" onSubmit={(e) => e.preventDefault()}>
+      <h1 className="text-xl mb-4 text-black w-full flex justify-center">Acesse sua conta</h1>
         <div className="mb-4">
-          <label className="text-black" htmlFor="user">Usuário</label>
+          <label className="text-black" htmlFor="email">E-mail</label>
           <input
-            type="text"
-            id="user"
-            placeholder="Usuário"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            id="email"
+            placeholder="E-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="border p-2 rounded-lg w-full"
           />
         </div>
@@ -69,7 +81,7 @@ const Login: React.FC = () => {
             </button>
           </div>
         </div>
-        {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
+        {errorMessage && <p className="text-red-500 mb-4 w-full flex justify-center">{errorMessage}</p>}
         <button
           type="button"
           onClick={handleLogin}
@@ -77,22 +89,10 @@ const Login: React.FC = () => {
         >
           Login
         </button>
-        <p
-          onClick={() => setIsModalOpen(true)}
-          className="mt-4 text-blue-500 cursor-pointer hover:underline text-center"
-        >
+        <p className="mt-4 text-blue-500 cursor-pointer hover:underline text-center">
           Esqueci a senha?
         </p>
       </form>
-      
-      {/* Modal para Recuperar Senha */}
-      <LoginModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        email={email}
-        onEmailChange={(e) => setEmail(e.target.value)}
-        onSendEmail={() => console.log("Enviar email para:", email)}
-      />
     </div>
   );
 };
