@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: () => void;
+  login: (token: string) => void;
   logout: () => void;
 }
 
@@ -17,22 +17,27 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  // Verifica se o cookie existe e atualiza o estado de autenticação
   useEffect(() => {
     const token = Cookies.get('authToken');
     setIsAuthenticated(!!token); // Atualiza o estado com base na presença do cookie
-  }, []);
 
-  const login = () => {
+    // Adiciona a verificação da rota
+    const currentPath = window.location.pathname; // Obtém o caminho atual
+    if (!token && currentPath !== '/login') {
+      router.push("/login"); // Redireciona para o login se não houver token
+    }
+  }, [router]);
+
+  const login = (token: string) => {
     setIsAuthenticated(true);
-    Cookies.set('authToken', 'your-token-value', { expires: 7, path: '/' }); // Define o cookie com o caminho correto
-    router.push('/'); // Redireciona após o login
+    Cookies.set('authToken', token, { expires: 7, path: '/' });
+    router.push('/homeLogged'); // Redireciona para a página após login
   };
 
   const logout = () => {
     setIsAuthenticated(false);
-    Cookies.remove('authToken'); // Remove o cookie
-    router.push('/'); // Redireciona para a página inicial
+    Cookies.remove('authToken');
+    router.push('/'); // Redireciona para a página inicial após logout
   };
 
   return (

@@ -14,7 +14,6 @@ class UserController {
       const user = await userService.createUser({ name, email, password, age, gender, cep, bairro });
       res.status(201).json({ message: 'Usuário criado com sucesso!', userId: user._id });
     } catch (error: any) {
-
       if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
         res.status(400).json({ message: 'Email já está em uso.' });
         return;
@@ -55,6 +54,7 @@ class UserController {
       const scores = await userService.getUserScores(userId);
       const latestScore = scores.length > 0 ? scores[0].score : null; 
 
+      // Retorna os dados do usuário
       res.status(200).json({
         name: user.name,
         email: user.email,
@@ -62,7 +62,36 @@ class UserController {
         gender: user.gender,
         cep: user.cep,
         bairro: user.bairro,
-        latestScore: latestScore 
+        latestScore: latestScore,
+        hash: user.hash // Incluindo o hash da senha se necessário
+      });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+
+  public async getUserDataByHash(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const hash = req.params.hash; // Obtém o hash da URL
+
+      const user = await userService.getUserByHash(hash);
+      if (!user) {
+        res.status(404).json({ message: 'Usuário não encontrado.' });
+        return;
+      }
+
+      const scores = await userService.getUserScores(user._id.toString());
+      const latestScore = scores.length > 0 ? scores[0].score : null; 
+
+      res.status(200).json({
+        name: user.name,
+        email: user.email,
+        age: user.age,
+        gender: user.gender,
+        cep: user.cep,
+        bairro: user.bairro,
+        latestScore: latestScore,
+        hash: user.hash // Incluindo o hash da senha se necessário
       });
     } catch (error: any) {
       next(error);

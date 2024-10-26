@@ -33,6 +33,10 @@ class UserService {
     return await User.findById(userId);
   }
 
+  public async getUserByHash(hash: string): Promise<IUserModel | null> {
+    return await User.findOne({ hash }); // Busca o usuário pelo hash
+  }
+
   public async getUserScores(userId: string): Promise<IScore[]> {
     return await Score.find({ userId }).sort({ createdAt: -1 });
   }
@@ -44,7 +48,7 @@ class UserService {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { hash: newHash },
-      { new: true } 
+      { new: true }
     );
 
     return updatedUser;

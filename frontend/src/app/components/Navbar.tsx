@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Raleway } from "next/font/google";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation"; // Importando useRouter para redirecionar
-import { useEffect, useState } from "react"; // Importando useState e useEffect
-import Cookies from "js-cookie"; // Importando a biblioteca js-cookie
+import {  useState } from "react"; // Importando useState e useEffect
+
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -16,15 +16,7 @@ const Navbar: React.FC = () => {
   const router = useRouter(); // Inicializando o roteador
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para controlar o menu
 
-  useEffect(() => {
-    // Verifica se o cookie de autenticação está presente
-    const userId = Cookies.get("userId"); // Substitua 'userId' pelo nome do seu cookie
 
-    if (!userId) {
-      // Se o cookie não estiver presente, redirecione para o login
-      router.push("/login");
-    }
-  }, [router]); // Dependência do router para evitar warning
 
   const handleLogout = () => {
     logout(); // Chama a função de logout
@@ -35,10 +27,22 @@ const Navbar: React.FC = () => {
     setIsMenuOpen(!isMenuOpen); // Alterna o estado do menu
   };
 
+  const handleLogoClick = () => {
+    // Redireciona dependendo do estado de autenticação
+    if (isAuthenticated) {
+      router.push("/homeLogged");
+    } else {
+      router.push("/");
+    }
+  };
+
   return (
     <nav className="bg-primary p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <span className={`${raleway.className} text-white font-bold text-4xl`}>
+        <span 
+          className={`${raleway.className} text-white font-bold text-4xl cursor-pointer`} 
+          onClick={handleLogoClick} // Adicionando o manipulador de clique
+        >
           FeelGood
         </span>
 

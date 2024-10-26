@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // app/login/page.tsx
 "use client";
 
@@ -30,8 +31,8 @@ const Login: React.FC = () => {
     try {
       const data = await loginUser(email, password);
       if (data.status) {
-        login(); // Chamando a função de login do contexto
-        Cookies.set('authToken', data.token, { expires: 7 }); // Salva o token real no cookie
+        login(data.userId); // Passando o userId para o contexto
+        Cookies.set('authToken', data.userId, { expires: 7 }); // Salva o token real no cookie
         router.push("/homeLogged"); // Redireciona para a página inicial
       } else {
         setErrorMessage(data.message || "Erro ao fazer login.");
@@ -40,7 +41,6 @@ const Login: React.FC = () => {
       setErrorMessage("Erro ao fazer login.");
     }
   };
-  
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
@@ -48,7 +48,7 @@ const Login: React.FC = () => {
         FeelGood
       </Link>
       <form className="bg-white p-6 rounded-2xl shadow-md md:max-w-[30%]" onSubmit={(e) => e.preventDefault()}>
-      <h1 className="text-xl mb-4 text-black w-full flex justify-center">Acesse sua conta</h1>
+        <h1 className="text-xl mb-4 text-black w-full flex justify-center">Acesse sua conta</h1>
         <div className="mb-4">
           <label className="text-black" htmlFor="email">E-mail</label>
           <input
