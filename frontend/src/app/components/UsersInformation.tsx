@@ -20,7 +20,6 @@ const UserProfile: React.FC = () => {
     const fetchUserData = async () => {
       setLoading(true);
       const token = Cookies.get("authToken"); // Use o cookie correto para autenticação
-      const userId = getUserId(token);
       setUser(token);
       if (!token) {
         setError("Usuário não encontrado. Faça o login novamente.");

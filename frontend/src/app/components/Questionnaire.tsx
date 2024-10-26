@@ -2,7 +2,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { calculateScore } from "../services/api";
+import Cookies from "js-cookie";
+import { calculateScore, getUserData, sendUserDataToChatbot } from "../services/api"; // Importando as funções necessárias
 
 const questions = [
   "Eu não me sinto particularmente satisfeito com o jeito que sou",
@@ -45,41 +46,13 @@ const alternatives = [
   "Concordo completamente",
 ];
 
-// Função para determinar o nível de felicidade com base no score
-const getHappinessLevel = (score: number) => {
-  if (score <= 2) {
-    return {
-      title: "Não Feliz",
-      description:
-        "Se você respondeu honestamente e obteve esse score baixo, recomendamos que procure observar seu estilo de vida e procure ajuda profissional para compreender melhor esses sentimentos e estabelecer uma avaliação mais apurada desse momento.",
-    };
-  } else if (score <= 5) {
-    return {
-      title: "Moderadamente Feliz",
-      description:
-        "Um score entre 3 e 5 pode ser uma média numérica exata de suas respostas de felicidade e infelicidade. Fortaleça, ainda mais, estes sentimentos com estilo de vida saudável, alimentação, lazer, trabalho, atividades físicas e relações humanas afetivas e próximas, para se tornar uma pessoa ainda mais feliz.",
-    };
-  } else {
-    return {
-      title: "Muito Feliz",
-      description:
-        "Se sentir feliz tem mais benefícios do que apenas sentir-se bem, porque a felicidade está relacionada à saúde, qualidade dos relacionamentos e desempenho acadêmico e profissional.",
-    };
-  }
-};
-
 const Questionnaire: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [responses, setResponses] = useState<number[]>(
-    Array(questions.length).fill(0)
-  );
+  const [responses, setResponses] = useState<number[]>(Array(questions.length).fill(0));
   const [isHoveringNext, setIsHoveringNext] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [score, setScore] = useState<number | null>(null);
-  const [happinessLevel, setHappinessLevel] = useState<{
-    title: string;
-    description: string;
-  } | null>(null);
+  const [happinessLevel, setHappinessLevel] = useState<{ title: string; description: string } | null>(null);
 
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -104,7 +77,32 @@ const Questionnaire: React.FC = () => {
     try {
       const result = await calculateScore(responses);
       setScore(result.score); // Acesse a propriedade "score" do objeto result
-      setHappinessLevel(getHappinessLevel(result.score)); // Define o nível de felicidade
+
+      // 1. Recuperar o token do cookie
+      const token = Cookies.get("authToken");
+      if (!token) {
+        throw new Error("Usuário não encontrado. Faça o login novamente.");
+      }
+
+      // 2. Obter os dados do usuário
+      const userData = await getUserData(token);
+      
+      // 3. Preparar os dados para enviar ao chatbot
+      const chatbotData = {
+        userId: token, // Você pode ajustar isso conforme necessário
+        name: userData.name,
+        age: userData.age,
+        gender: userData.gender,
+        score: result.score,
+      };
+
+      // 4. Enviar dados ao chatbot
+      const response = await sendUserDataToChatbot(chatbotData);
+      
+      setHappinessLevel({
+        title: "Resultado do Chatbot",
+        description: response.response, // Use a descrição da resposta do chatbot
+      });
     } catch (error) {
       console.error("Erro ao enviar respostas:", error);
     } finally {
