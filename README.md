@@ -57,33 +57,31 @@ frontend/
 
 ### Backend
 
-```bash
 1. Navegue até a pasta do frontend:
-
+```bash
 cd backend
-
+```
 2. Instale as dependências:
-
+```bash
 npm install
-
+```
 3. Inicie o servidor:
-
+```bash
 npm start
 ```
 
 ### Frontend
 
-```bash
 1. Navegue até a pasta do frontend:
-
+```bash
 cd frontend
-
+```
 2. Instale as dependências:
-
+```bash
 npm install
-
+```
 3. Inicie o aplicativo:
-
+```bash
 npm run dev
 ```
 
