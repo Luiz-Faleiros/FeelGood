@@ -5,6 +5,7 @@ import userRoutes from './routes/userRoutes';
 import questionnaireRoutes from './routes/questionnaireRoutes';
 import { errorHandler } from './middlewares/errorMiddleware';
 import cors from 'cors';
+import scoreRoutes from './routes/scoreRoutes';
 
 dotenv.config();
 
@@ -26,9 +27,12 @@ connectDB();
 // Middlewares
 app.use(express.json());
 
+
+
 // Rotas
 app.use('/api/users', userRoutes);
 app.use('/api/questionnaire', questionnaireRoutes);
+app.use('/api/scores', scoreRoutes);
 
 // Middleware de Erro
 app.use(errorHandler);
