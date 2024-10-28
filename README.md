@@ -14,6 +14,7 @@ FeelGood é um aplicativo projetado para ajudar a saúde psicológica dos usuár
 - **Backend**: 
   - Node.js
   - Express
+  - MongoDB
   - Mongoose
   - JSON Web Token (JWT)
 
@@ -57,7 +58,71 @@ frontend/
 └── tailwind.config.ts
 ```
 
-## Instruções para Execução
+# Configurações Importantes
+
+## ```package.json``` **(Backend)**
+
+Certifique-se de que o arquivo ```package.json``` do backend tenha os seguintes scripts configurados:
+
+```bash
+{
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/app.js",
+    "dev": "ts-node-dev src/app.ts",
+    "build": "tsc"
+  }
+}
+```
+
+Esses scripts permitem rodar o servidor em modo de desenvolvimento e construir o projeto.
+
+## ```tsconfig.json``` **(Backend)**
+
+O arquivo ```tsconfig.json``` deve conter as seguintes configurações:
+
+```bash
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
+```
+
+Essas opções garantem que o TypeScript esteja configurado corretamente para compilar o código do backend e gerar os arquivos na pasta ```dist```
+
+## Configuração do Arquivo ```.env```
+
+No backend, será necessário criar um arquivo ```.env``` com as seguintes variáveis de ambiente para configurar a conexão com o MongoDB:
+
+1. Crie o arquivo ```.env``` na raiz da pasta backend:
+
+```bash
+touch backend/.env
+```
+
+2. Adicione as seguintes variáveis de ambiente ao arquivo ```.env```:
+
+```bash
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/<dbname>?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret
+PORT=5000
+```
+
+- **MONGO_URI**: URL de conexão do MongoDB com o nome de usuário e senha.
+- **JWT_SECRET**: Uma chave secreta usada para assinar e verificar tokens JWT.
+- **PORT**: A porta na qual o servidor backend vai rodar.
+
+Você pode usar o arquivo ```.env``` como referência para configurar o ambiente local.
+
+# Instruções para Execução
 
 ## Clonando o Repositório
 
@@ -79,7 +144,7 @@ npm install
 ```
 3. Inicie o servidor:
 ```bash
-npm start
+npm run dev
 ```
 
 ### Frontend
