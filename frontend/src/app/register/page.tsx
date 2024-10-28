@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { registerUser } from '../services/api'; // Importando a função de registro
 import Link from "next/link";
 import { Raleway } from "next/font/google";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -149,10 +150,10 @@ const Register: React.FC = () => {
                         <button
                             type="button"
                             onClick={togglePasswordVisibility}
-                            className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                            className="flex items-center justify-center absolute right-2 top-3"
                             aria-label="Toggle password visibility"
                         >
-                            {showPassword ? "👁️" : "👁️‍🗨️"}
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </button>
                         {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                     </div>
