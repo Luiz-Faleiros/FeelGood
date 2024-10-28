@@ -14,6 +14,7 @@ FeelGood é um aplicativo projetado para ajudar a saúde psicológica dos usuár
 - **Backend**: 
   - Node.js
   - Express
+  - MongoDB
   - Mongoose
   - JSON Web Token (JWT)
 
