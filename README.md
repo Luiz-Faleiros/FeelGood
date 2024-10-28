@@ -59,7 +59,7 @@ frontend/
 
 ## Configurações Importantes
 
-# ```package.json``` *(Backend)*
+# ```package.json``` **(Backend)**
 
 Certifique-se de que o arquivo ```package.json``` do backend tenha os seguintes scripts configurados:
 
@@ -76,7 +76,7 @@ Certifique-se de que o arquivo ```package.json``` do backend tenha os seguintes 
 
 Esses scripts permitem rodar o servidor em modo de desenvolvimento e construir o projeto.
 
-# ```tsconfig.json``` *(Backend)*
+# ```tsconfig.json``` **(Backend)**
 
 O arquivo ```tsconfig.json``` deve conter as seguintes configurações:
 
@@ -97,9 +97,33 @@ O arquivo ```tsconfig.json``` deve conter as seguintes configurações:
 
 Essas opções garantem que o TypeScript esteja configurado corretamente para compilar o código do backend e gerar os arquivos na pasta ```dist```
 
+## Configuração do Arquivo ```.env```
+
+No backend, será necessário criar um arquivo ```.env``` com as seguintes variáveis de ambiente para configurar a conexão com o MongoDB:
+
+1. Crie o arquivo ```.env``` na raiz da pasta backend:
+
+```bash
+touch backend/.env
+```
+
+2. Adicione as seguintes variáveis de ambiente ao arquivo ```.env```:
+
+```bash
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/<dbname>?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret
+PORT=5000
+```
+
+- **MONGO_URI**: URL de conexão do MongoDB com o nome de usuário e senha.
+- **JWT_SECRET**: Uma chave secreta usada para assinar e verificar tokens JWT.
+- **PORT**: A porta na qual o servidor backend vai rodar.
+
+Você pode usar o arquivo ```.env``` como referência para configurar o ambiente local.
+
 ## Instruções para Execução
 
-## Clonando o Repositório
+# Clonando o Repositório
 
 Para começar, clone o repositório do projeto:
 
