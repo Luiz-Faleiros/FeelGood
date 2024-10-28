@@ -57,9 +57,9 @@ frontend/
 └── tailwind.config.ts
 ```
 
-## Configurações Importantes
+# Configurações Importantes
 
-# ```package.json``` **(Backend)**
+## ```package.json``` **(Backend)**
 
 Certifique-se de que o arquivo ```package.json``` do backend tenha os seguintes scripts configurados:
 
@@ -76,7 +76,7 @@ Certifique-se de que o arquivo ```package.json``` do backend tenha os seguintes 
 
 Esses scripts permitem rodar o servidor em modo de desenvolvimento e construir o projeto.
 
-# ```tsconfig.json``` **(Backend)**
+## ```tsconfig.json``` **(Backend)**
 
 O arquivo ```tsconfig.json``` deve conter as seguintes configurações:
 
