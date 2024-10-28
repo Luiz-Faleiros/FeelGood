@@ -69,10 +69,10 @@ const UserProfile: React.FC = () => {
           <p><strong>Gênero:</strong> {userData.gender}</p>
           <p><strong>CEP:</strong> {userData.cep}</p>
           <p><strong>Bairro:</strong> {userData.bairro}</p>
-          <p className="flex items-center">
-            <strong>Número de Identificação:</strong> {userId} 
-            <button 
-              onClick={() => copyToClipboard(userId)} 
+          <p className="flex items-center w-full flex-wrap">
+            <strong>Número de Identificação:</strong> <span>{userId} </span>
+            <button
+              onClick={() => copyToClipboard(userId)}
               className="ml-2 text-black hover:text-gray-700" // Altera a cor do ícone de copiar para preto
               aria-label="Copiar número de identificação"
               disabled={copied} // Desabilita o botão após a cópia

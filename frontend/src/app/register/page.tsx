@@ -108,7 +108,7 @@ const Register: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <div className="flex flex-col items-center justify-center h-full md:h-screen bg-gray-100">
             <Link href="/" className={`${raleway.className} text-black font-bold text-4xl mb-4`}>
                 FeelGood
             </Link>

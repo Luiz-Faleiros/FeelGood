@@ -89,9 +89,12 @@ const Login: React.FC = () => {
         >
           Login
         </button>
-        <p className="mt-4 text-blue-500 cursor-pointer hover:underline text-center">
-          Esqueci a senha?
-        </p>
+        <div className="w-full flex flex-wrap justify-between">
+          <p className="mt-4 text-blue-500 cursor-pointer hover:underline text-center">
+            Esqueci a senha?
+          </p>
+          <Link  href="/register" className="mt-4 text-blue-500 cursor-pointer hover:underline text-center">Cadastrar</Link>
+        </div>
       </form>
     </div>
   );

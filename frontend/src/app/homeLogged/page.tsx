@@ -1,7 +1,6 @@
-// app/page.tsx
 "use client"; // Certifique-se de que este arquivo esteja marcado como um componente de cliente
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Importando useRouter para redirecionar
 import { useAuth } from "../context/AuthContext"; // Importando o contexto de autenticação
 import Navbar from "../components/Navbar";
@@ -10,12 +9,22 @@ import Questionnaire from "../components/Questionnaire";
 const Home: React.FC = () => {
   const router = useRouter();
   const { isAuthenticated } = useAuth(); // Obtendo o estado de autenticação
+  const [loading, setLoading] = useState(true); // Estado para carregar
 
   useEffect(() => {
+    if (loading) {
+      // Se ainda estiver carregando, não redireciona
+      setLoading(false);
+      return; // Permite que a verificação continue após o carregamento
+    }
+
     if (!isAuthenticated) {
+      console.log('Redirecionando para o login');
       router.push("/login"); // Redireciona para a página de login se não estiver autenticado
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, loading, router]);
+
+  if (loading) return <div>Loading...</div>; // Exibir um loading enquanto verifica a autenticação
 
   return (
     <div>
