@@ -57,6 +57,46 @@ frontend/
 └── tailwind.config.ts
 ```
 
+## Configurações Importantes
+
+# ```package.json``` *(Backend)*
+
+Certifique-se de que o arquivo ```package.json``` do backend tenha os seguintes scripts configurados:
+
+```bash
+{
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/app.js",
+    "dev": "ts-node-dev src/app.ts",
+    "build": "tsc"
+  }
+}
+```
+
+Esses scripts permitem rodar o servidor em modo de desenvolvimento e construir o projeto.
+
+# ```tsconfig.json``` *(Backend)*
+
+O arquivo ```tsconfig.json``` deve conter as seguintes configurações:
+
+```bash
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
+```
+
+Essas opções garantem que o TypeScript esteja configurado corretamente para compilar o código do backend e gerar os arquivos na pasta ```dist```
+
 ## Instruções para Execução
 
 ## Clonando o Repositório
