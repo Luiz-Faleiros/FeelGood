@@ -121,9 +121,9 @@ PORT=5000
 
 Você pode usar o arquivo ```.env``` como referência para configurar o ambiente local.
 
-## Instruções para Execução
+# Instruções para Execução
 
-# Clonando o Repositório
+## Clonando o Repositório
 
 Para começar, clone o repositório do projeto:
 
