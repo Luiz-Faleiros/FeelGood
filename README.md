@@ -79,7 +79,7 @@ npm install
 ```
 3. Inicie o servidor:
 ```bash
-npm start
+npm run dev
 ```
 
 ### Frontend
